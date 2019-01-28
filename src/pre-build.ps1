@@ -14,10 +14,10 @@ $description = ""
 $company = ""
 $product = ""
 $owner = "Owner Name"
+$year = Get-Date -Format 'yyyy'
 $trademark = ""
 
 $version = Get-Date -Format 'yy.M.d.HHmm'
-$year = Get-Date -Format 'yyyy'
 
 $content = @"
 using System.Reflection;
