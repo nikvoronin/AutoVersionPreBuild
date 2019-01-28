@@ -5,6 +5,11 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoVersionPreBuild", "AutoVersionPreBuild\AutoVersionPreBuild.csproj", "{1BCA61C5-97EE-4DCD-B193-76758F0567BA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E233C232-F426-4DCF-BB82-B734183675C0}"
+	ProjectSection(SolutionItems) = preProject
+		pre-build.ps1 = pre-build.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

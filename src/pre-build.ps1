@@ -1,9 +1,6 @@
 <#
-
 Project Settings -> Build Events -> Pre-build event command line:
-
 powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File $(SolutionDir)pre-build.ps1 -projectPath "$(ProjectDir)\"
-
 #>
 
 param (
@@ -12,7 +9,7 @@ param (
 
 $assemblyInfoPath = "$($projectPath)Properties\AssemblyInfo.cs"
 
-$title = "TestPreBuild"
+$title = "AutoVersionPreBuild"
 $description = ""
 $company = ""
 $product = ""
