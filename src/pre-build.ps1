@@ -4,18 +4,19 @@ powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File $(Soluti
 #>
 
 param (
-    [string]$projectPath = "Properties\"
+    [string]$projectPath = 'Properties\'
 )
 
 $assemblyInfoPath = "$($projectPath)Properties\AssemblyInfo.cs"
 
-$title = "AutoVersionPreBuild"
-$description = ""
-$company = ""
-$product = ""
-$owner = "Owner Name"
-$year = Get-Date -Format 'yyyy'
+$title = 'AutoVersionPreBuild'
+$description = ''
+$product = ''
+$owner = 'Owner Name'
+$company = ''
 $trademark = ""
+$year = Get-Date -Format 'yyyy'
+$years = "1910-$year"
 
 $version = Get-Date -Format 'yy.M.d.HHmm'
 
@@ -27,7 +28,7 @@ using System.Reflection;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("$company")]
 [assembly: AssemblyProduct("$product")]
-[assembly: AssemblyCopyright("Copyright (c) $year")]
+[assembly: AssemblyCopyright("Copyright (c) $owner $years")]
 [assembly: AssemblyTrademark("$trademark")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("$version")]
