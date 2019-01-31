@@ -1,37 +1,38 @@
 <#
-Project Settings -> Build Events -> Pre-build event command line:
-powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File $(SolutionDir)pre-build.ps1 -projectPath "$(ProjectDir)\"
+Drop pre-build.ps1 next to .sln file then add pre-build event action at the
+Visual Studio -> Project Settings -> Build Events -> Pre-build event command line:
+powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File $(SolutionDir)pre-build.ps1 -ProjectDir "$(ProjectDir)\"
 #>
 
 param (
-    [string]$projectPath = 'Properties\'
+    [string]$ProjectDir = '.\',
+    [string]$PropertiesDir = 'Properties',
+	[string]$AsmInfoFilename = 'AssemblyInfo.cs'
 )
 
-$assemblyInfoPath = "$($projectPath)Properties\AssemblyInfo.cs"
+$ProjectDir = ($ProjectDir, "$ProjectDir\")[!$ProjectDir.EndsWith('\')]
+$PropertiesDir = ($PropertiesDir, "$PropertiesDir\")[!$PropertiesDir.EndsWith('\')]
+$asmInfoPath = "$ProjectDir$PropertiesDir$AsmInfoFilename"
+$asmInfoPresent = Test-Path $asmInfoPath
 
-$title = 'AutoVersionPreBuild'
-$description = ''
-$product = ''
-$owner = 'Owner Name'
-$company = ''
-$trademark = ""
-$year = Get-Date -Format 'yyyy'
-$years = "1910-$year"
+if (!$asmInfoPresent) { 
+	Write-Host "ERROR: Assembly info file not found at $asmInfoPath"
+	Exit 1 
+}
 
-$version = Get-Date -Format 'yy.M.d.HHmm'
+function Get-VersionString {
+	Get-Date -Format 'yy.M.d.HHmm'
+}
 
-$content = @"
-using System.Reflection;
+$content = ""
+$pattern = '\[assembly: AssemblyVersion\("(.*)"\)\]'
+foreach($line in [System.IO.File]::ReadLines($asmInfoPath)) {
+	if($line -match $pattern) {
+		$version = Get-VersionString
+		$line = "[assembly: AssemblyVersion(""$version"")]";
+	}
 
-[assembly: AssemblyTitle("$title")]
-[assembly: AssemblyDescription("$description")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("$company")]
-[assembly: AssemblyProduct("$product")]
-[assembly: AssemblyCopyright("Copyright (c) $owner $years")]
-[assembly: AssemblyTrademark("$trademark")]
-[assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("$version")]
-"@
+    $content += "$line`r`n"
+}
 
-$content | Out-File $assemblyInfoPath
+$content.TrimEnd() | Out-File $asmInfoPath
