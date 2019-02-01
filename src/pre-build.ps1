@@ -13,11 +13,11 @@ param (
 $ProjectDir = ($ProjectDir, "$ProjectDir\")[!$ProjectDir.EndsWith('\')]
 $PropertiesDir = ($PropertiesDir, "$PropertiesDir\")[!$PropertiesDir.EndsWith('\')]
 $asmInfoPath = "$ProjectDir$PropertiesDir$AsmInfoFilename"
-$asmInfoPresent = Test-Path $asmInfoPath
+$asmInfoExists = Test-Path $asmInfoPath
 
-if (!$asmInfoPresent) { 
-	Write-Host "ERROR: Assembly info file not found at $asmInfoPath"
-	Exit 1 
+if (!$asmInfoExists) { 
+	Write-Host "ERROR: AssemblyInfo file not found at $asmInfoPath"
+	Exit 1
 }
 
 function Get-VersionString {
@@ -25,14 +25,17 @@ function Get-VersionString {
 }
 
 $content = ""
-$pattern = '\[assembly: AssemblyVersion\("(.*)"\)\]'
 foreach($line in [System.IO.File]::ReadLines($asmInfoPath)) {
-	if($line -match $pattern) {
+    $attrName, $attrValue, $attrTail = $line.split('"');
+    if ($attrName.contains('AssemblyVersion')) {
 		$version = Get-VersionString
-		$line = "[assembly: AssemblyVersion(""$version"")]";
-	}
+        $newline = "$attrName""$version""$attrTail"
+    }
+    else {
+        $newline = "$line`r`n"
+    }
 
-    $content += "$line`r`n"
+    $content += $newline
 }
 
 $content.TrimEnd() | Out-File $asmInfoPath
