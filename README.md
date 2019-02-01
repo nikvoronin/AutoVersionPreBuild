@@ -2,7 +2,7 @@
 
 Auto incremental version number in a date format like: `Version 19.12.03.1643`. Script changes version attribute only.
 
-Drop `pre-build.ps1` next to .sln file then add pre-build event action at the<br/>
+Drop [pre-build.ps1](https://github.com/nikvoronin/AutoVersionPreBuild/blob/master/src/pre-build.ps1) next to .sln file then add pre-build event action at the<br/>
 `Visual Studio -> Project Settings -> Build Events -> Pre-build event command line`
 
 ```
