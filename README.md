@@ -7,7 +7,7 @@ Drop [pre-build.ps1](https://github.com/nikvoronin/AutoVersionPreBuild/blob/mast
 
 next line
 ```
-powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File $(SolutionDir)pre-build.ps1 -ProjectDir "$(ProjectDir)\"
+powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File "$(SolutionDir)pre-build.ps1" -ProjectDir "$(ProjectDir)\"
 ```
 
 Do not remove last slash `\"`
@@ -20,5 +20,5 @@ Do not remove last slash `\"`
 
 ## Example
 ```
-powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File $(SolutionDir)pre-build.ps1 -ProjectDir "$(ProjectDir)\" -PropertiesDir "Properties" -AsmInfoFilename "AssemblyInfo.cs"
+powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File "$(SolutionDir)pre-build.ps1" -ProjectDir "$(ProjectDir)\" -PropertiesDir "Properties" -AsmInfoFilename "AssemblyInfo.cs"
 ```
